@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<h3 class="display-3 text-center mt-3">Tic Tac Toe</h3>
+<div class="container">
+    <form method="post" action="{% url 'create_board' %}">
+        {% csrf_token %}
+        <div class="row g-3 align-items-center ms-3">
+            <div class="col-auto">
+                <label for="inputBoardSize" class="col-form-label"
+                    >Create a new game:
+                </label>
+            </div>
+            <div class="col-auto">
+                <input
+                    type="number"
+                    id="inputBoardSize"
+                    name="size"
+                    class="form-control"
+                    placeholder="Board Size"
+                />
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-outline-primary">
+                    Create
+                </button>
+            </div>
+        </div>
+    </form>
+    {% for board in boards %}
+    <div class="card mt-4" style="width: 18rem">
+        <div class="card-body">
+            <h5 class="card-title">Board {{ board.id }}</h5>
+            <p class="card-text">Size: {{ board.size }}</p>
+            <a href="/tic_tac_toe/" class="btn btn-primary">Join game</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
