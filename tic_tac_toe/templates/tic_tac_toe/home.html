@@ -25,14 +25,67 @@
             </div>
         </div>
     </form>
-    {% for board in boards %}
-    <div class="card mt-4" style="width: 18rem">
-        <div class="card-body">
-            <h5 class="card-title">Board {{ board.id }}</h5>
-            <p class="card-text">Size: {{ board.size }}</p>
-            <a href="/tic_tac_toe/" class="btn btn-primary">Join game</a>
+    <div class="d-flex flex-row flex-wrap justify-content-evenly">
+        {% for board in boards %}
+        <div class="card mt-4" style="width: 18rem">
+            <div class="card-body">
+                <h5 class="card-title">Board {{ board.id }}</h5>
+                <p class="card-text">Size: {{ board.size }}</p>
+                <a href="/tic_tac_toe/" class="btn btn-primary">Join game</a>
+                <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteBoard_{{ board.id }}"
+                >
+                    Delete board
+                </button>
+            </div>
         </div>
+        <div
+            class="modal fade"
+            id="deleteBoard_{{ board.id }}"
+            tabindex="-1"
+            aria-labelledby="deleteBoard_{{ board.id }}Label"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1
+                            class="modal-title fs-5"
+                            id="deleteBoard_{{ board.id }}Label"
+                        >
+                            Confirm deletion
+                        </h1>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this board?
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            No
+                        </button>
+                        <a
+                            href="{% url 'delete_board' board.id %}"
+                            class="btn btn-primary"
+                            >Yes</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock content %}

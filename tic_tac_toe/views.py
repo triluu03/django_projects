@@ -21,3 +21,8 @@ def createBoardView(request):
             board = Board(size=size)
         board.save()
     return redirect('home')
+
+def deleteBoardView(request, board_id):
+    board = Board.objects.get(pk=board_id)
+    board.delete()
+    return redirect('home')
