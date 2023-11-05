@@ -1,36 +1,34 @@
-{% extends 'base.html' %} {% load static %} {% block style %}
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
 <style>
-    td {
+    th, td {
         width: 2em;
         height: 2em;
         text-align: center;
-    }
-    th {
-        text-align: center;
+        display: inline-block;
     }
     button {
         width: 100%;
         height: 100%;
         border: none;
     }
+    button:hover, button:disabled {
+        background-color: aquamarine;
+    }
     form {
         width: 100%;
         height: 100%;
     }
-    button:hover {
-        background-color: aquamarine;
-    }
-    .selected {
-        background-color: aquamarine;
-    }
     .board {
-        margin-left: 5vw;
-        width: 2000px;
-        overflow-x: auto;
-        overflow-y: hidden;
+        margin-left: 1vw;
+        padding-right: 2vw;
+        overflow-x: scroll;
+        white-space: nowrap;
     }
 </style>
-{% endblock style %} {% block content %}
+{% endblock style %}
+{% block content %}
 <h3 class="display-3 text-center mt-3">Tic Tac Toe</h3>
 <div class="board">
     <table>
@@ -45,12 +43,11 @@
             <tr>
                 <th>{{ row_i }}</th>
                 {% for col_i in size %}
-                <td>{% include 'includes/square.html' %}</td>
+                <td>{% include "includes/square.html" with row=row_i col=col_i played="" %}</td>
                 {% endfor %}
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
-
 {% endblock content %}

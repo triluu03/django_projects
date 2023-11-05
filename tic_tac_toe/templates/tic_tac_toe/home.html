@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 <h3 class="display-3 text-center mt-3">Tic Tac Toe</h3>
 <div class="container">
     <form method="post" action="{% url 'create_board' %}">
@@ -19,9 +21,7 @@
                 />
             </div>
             <div class="col-auto">
-                <button type="submit" class="btn btn-outline-primary">
-                    Create
-                </button>
+                <button type="submit" class="btn btn-primary">Create</button>
             </div>
         </div>
     </form>
@@ -31,10 +31,14 @@
             <div class="card-body">
                 <h5 class="card-title">Board {{ board.id }}</h5>
                 <p class="card-text">Size: {{ board.size }}</p>
-                <a href="/tic_tac_toe/" class="btn btn-primary">Join game</a>
+                <a
+                    href="{% url 'game' board.id %}"
+                    class="btn btn-outline-primary"
+                    >Join game</a
+                >
                 <button
                     type="button"
-                    class="btn btn-danger"
+                    class="btn btn-outline-danger"
                     data-bs-toggle="modal"
                     data-bs-target="#deleteBoard_{{ board.id }}"
                 >

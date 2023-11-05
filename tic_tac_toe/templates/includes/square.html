@@ -1,5 +1,9 @@
-{% csrf_token %}
-<form action="" method="post">
-    <input type="hidden" value="0" />
-    <button type="submit"></button>
-</form>
+{% if played == "" %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="0" />
+        <button type="submit"></button>
+    </form>
+{% else %}
+    <button type="submit" disabled>{{ played }}</button>
+{% endif %}

@@ -9,8 +9,10 @@ def home(request):
     boards = Board.objects.all()
     return render(request, 'tic_tac_toe/home.html', {'boards': boards})
 
-def gameView(request):
-    return render(request, 'tic_tac_toe/game.html', {'size': range(1, 51, 1)})
+def gameView(request, board_id):
+    board = Board.objects.get(pk=board_id)
+    size = board.size
+    return render(request, 'tic_tac_toe/game.html', {'size': range(1, size + 1, 1)})
 
 def createBoardView(request):
     if request.method == 'POST':
