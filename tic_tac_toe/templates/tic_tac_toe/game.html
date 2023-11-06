@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block style %}
 <style>
     th, td {
@@ -43,7 +44,7 @@
             <tr>
                 <th>{{ row_i }}</th>
                 {% for col_i in size %}
-                <td>{% include "includes/square.html" with row=row_i col=col_i played="" %}</td>
+                <td>{% include "includes/square.html" with board_id=board_id row=row_i col=col_i played=details|index:row_i|index:col_i %}</td>
                 {% endfor %}
             </tr>
             {% endfor %}

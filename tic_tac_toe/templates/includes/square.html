@@ -1,5 +1,5 @@
 {% if played == "" %}
-    <form action="" method="post">
+    <form action="{% url 'update_board' board_id row col %}" method="post">
         {% csrf_token %}
         <input type="hidden" value="0" />
         <button type="submit"></button>
