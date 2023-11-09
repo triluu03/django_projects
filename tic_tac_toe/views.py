@@ -80,8 +80,9 @@ def updateBoardView(request, board_id, row, col):
         details = np.array(board.details.split(',')).reshape(size, size)
         details[row, col] = "X"
         if checkEndGame(details, row, col):
-            # Handle the ending of the game
-            pass
+            board.details = ",".join([""]*(size**2))
+            board.save()
+            return render(request, 'tic_tac_toe/end_game.html', {'board_id': board_id,'winner': 'X'})
         board.details = ",".join(details.flatten().tolist())
         board.save()
     return redirect('game', board_id=board_id)

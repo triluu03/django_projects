@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+{% endblock style %}
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold text-body-emphasis">Game Over</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">Click the buttons below to replay the game or go back to the main page.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'game' board_id %}" class="btn btn-outline-secondary btn-lg px-4">Replay</a>
+            <a href="{% url 'home' %}" class="btn btn-primary btn-lg px-4 gap-3">Main Page</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

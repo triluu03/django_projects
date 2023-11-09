@@ -32,7 +32,7 @@ def check_in_array(array, index, n = 5):
         boolean value
     """
     num = 1
-    for i in range(index, len(array)):
+    for i in range(index+1, len(array)):
         if array[i] == array[i-1]:
             num += 1
             if num == n:
