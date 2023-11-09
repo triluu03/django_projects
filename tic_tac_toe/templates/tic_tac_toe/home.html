@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<h3 class="display-3 text-center mt-3">Tic Tac Toe</h3>
-<div class="container">
+<div class="container-fluid pt-4 pb-4 mb-2" style="background-color: #87C4FF;">
+    <h4 class="display-4 text-center">Tic Tac Toe</h4>
+</div>
+<div class="container mt-4">
     <form method="post" action="{% url 'create_board' %}">
         {% csrf_token %}
         <div class="row g-3 align-items-center ms-3">
