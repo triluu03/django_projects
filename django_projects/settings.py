@@ -31,8 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "home_page.apps.HomePageConfig",
-    "tic_tac_toe.apps.TicTacToeConfig",
+    "channels",
+    "home_page",
+    "tic_tac_toe",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -69,7 +70,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "django_projects.wsgi.application"
+# WSGI_APPLICATION = "django_projects.wsgi.application"
+ASGI_APPLICATION = "django_projects.asgi.application"
 
 
 # Database
@@ -79,6 +81,12 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
 

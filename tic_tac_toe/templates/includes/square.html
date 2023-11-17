@@ -1,9 +1,5 @@
 {% if played == "" %}
-    <form action="{% url 'update_board' board_id row col %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" value="0" />
-        <button type="submit"></button>
-    </form>
+    <button type="button" onclick="updateBoard('{{ board_id }}', '{{ row }}', '{{ col }}')"></button>
 {% else %}
     <button type="submit" disabled>{{ played }}</button>
 {% endif %}

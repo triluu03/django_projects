@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from .models import Board
 
 import numpy as np
-from .helper.check_end_conditions import checkEndGame
 
 # Create your views here.
 
@@ -63,29 +62,5 @@ def deleteBoardView(request, board_id):
     board.delete()
     return redirect('home')
 
-def updateBoardView(request, board_id, row, col):
-    """
-    Handle players' moves of the game
-    params:
-        request: http request object
-        board_id: id of the board
-        row: row of the move
-        col: column of the move
-    return:
-        redirect to the game page
-    """
-    if request.method == 'POST':
-        board = Board.objects.get(pk=board_id)
-        size = board.size
-        details = np.array(board.details.split(',')).reshape(size, size)
-        details[row, col] = "X"
-        if checkEndGame(details, row, col):
-            board.details = ",".join([""]*(size**2))
-            board.save()
-            return render(request, 'tic_tac_toe/end_game.html', {'board_id': board_id,'winner': 'X'})
-        board.details = ",".join(details.flatten().tolist())
-        board.save()
-    return redirect('game', board_id=board_id)
-
-def endGameView(request):
-    pass
+def endGameView(request, board_id):
+    return render(request, 'tic_tac_toe/end_game.html', {'board_id': board_id, 'winner': 'X'})
