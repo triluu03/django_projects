@@ -1,9 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="container-fluid pt-4 pb-4 mb-2" style="background-color: #87C4FF;">
-    <h4 class="display-4 text-center">Tic Tac Toe</h4>
-</div>
+<nav class="navbar navbar-expand-lg" style="background-color: #E0F4FF;">
+    <div class="container">
+        <a class="navbar-brand" href="/tic_tac_toe/">Tic Tac Toe</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-info" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-info" aria-current="page" href="/tic_tac_toe/">Tic Tac Toe</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <a href="{% url 'logout' %}" class="btn btn-outline-info">Logout</a>
+            </span>
+        </div>
+    </div>
+</nav>
 <div class="container mt-4">
     <form method="post" action="{% url 'create_board' %}">
         {% csrf_token %}
@@ -32,7 +47,7 @@
         <div class="card mt-4" style="width: 18rem">
             <div class="card-body">
                 <h5 class="card-title">Board {{ board.id }}</h5>
-                <p class="card-text">Size: {{ board.size }}</p>
+                <p class="card-text">Size: {{ board.size }}x{{ board.size }}</p>
                 <a
                     href="{% url 'game' board.id %}"
                     class="btn btn-outline-primary"

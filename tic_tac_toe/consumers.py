@@ -3,7 +3,6 @@ from channels.db import database_sync_to_async
 import json
 import numpy as np
 
-from django.shortcuts import redirect
 from .models import Board
 from .helper.check_end_conditions import checkEndGame
 
