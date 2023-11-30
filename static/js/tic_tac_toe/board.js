@@ -3,7 +3,6 @@
 
 // for production
 const socketUrl = `wss://${window.location.host}/ws${window.location.pathname}`;
-console.log('creating socket connection to ', socketUrl);
 const socket = new WebSocket(socketUrl);
 
 socket.onmessage = function (e) {
