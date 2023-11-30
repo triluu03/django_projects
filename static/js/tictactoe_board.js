@@ -1,4 +1,9 @@
-const socketUrl = `ws://${window.location.host}/ws${window.location.pathname}`;
+// for development
+// const socketUrl = `ws://${window.location.host}/ws${window.location.pathname}`;
+
+// for production
+const socketUrl = `wss://${window.location.host}/ws${window.location.pathname}`;
+console.log('creating socket connection to ', socketUrl);
 const socket = new WebSocket(socketUrl);
 
 socket.onmessage = function (e) {
