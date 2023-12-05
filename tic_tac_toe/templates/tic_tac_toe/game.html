@@ -14,8 +14,8 @@
         height: 100%;
         border: none;
     }
-    button:hover, button:disabled {
-        background-color: aquamarine;
+    button:hover {
+        background-color: #00BFFF;
     }
     form {
         width: 100%;
@@ -27,10 +27,34 @@
         overflow-x: scroll;
         white-space: nowrap;
     }
+    #game_button {
+        margin-bottom: 1vh;
+        width: 20%;
+    }
 </style>
 {% endblock style %}
 {% block content %}
-<h3 class="display-3 text-center mt-3">Tic Tac Toe</h3>
+<div id="game_header">
+    <button type="button" id="game_button" class="btn btn-primary ms-5 mt-4" onclick="saveGame()">Save Game</button>
+    <a href="/tic_tac_toe/" id="game_button" class="btn btn-outline-danger ms-5 mt-4">Leave Game</a>
+</div>
+<template>
+    <div class="container mt-2">
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <div>The game has been saved!</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</template>
+
+<template>
+    <div class="container mt-2">
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div>Failed in saving the game!</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</template>
 <div class="board">
     <table>
         <tbody>

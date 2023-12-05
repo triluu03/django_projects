@@ -31,90 +31,111 @@ class GameConsumer(AsyncWebsocketConsumer):
         message = data['message']
         
         if message == "join game":
+            board_info = await self.get_board_info(self.board_id)
+            previous = board_info["previous"]
+            self.size = board_info["size"]
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     "type": "join_message",
-                    "message": message
+                    "message": message,
+                    "previous": previous
                 }
             )
         elif message == "update board":
             board_id = data['board_id']
-            row = data['row']
-            col = data['col']
-            signal = await self.update_board(board_id, row, col)
-            if signal == "continue":
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        "type": "play_message",
-                        "message": message,
-                        "board_id": board_id,
-                        "row": row,
-                        "col": col
-                    }
-                ) 
-            elif signal == "end":
+            row = int(data['row'])
+            col = int(data['col'])
+            next_move = data['next_move']
+            details = np.array(data['details']).reshape(self.size, self.size)
+            details[row, col] = next_move
+            if checkEndGame(details, row, col):
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
                         "type": "end_message",
                         "message": "end game",
-                        "board_id": board_id,
-                        "last_row": row,
-                        "last_col": col
+                        "board_id": board_id
+                    }
+                )
+            else:
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "play_message",
+                        "message": "play message",
+                        "button_id": self.size*row + col,
+                    }
+                )
+        elif message == "save game":
+            next_move = data['next_move']
+            details = data['details']
+            try:
+                await self.save_game(next_move, details)
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "save_message",
+                        "message": message,
+                        "status": "success"
+                    }
+                )
+            except:
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "save_message",
+                        "message": message,
+                        "status": "failed"
                     }
                 )
 
     async def join_message(self, event):
         message = event["message"]
+        previous = event["previous"]
         await self.send(text_data=json.dumps({
-            "message": message
+            "message": message,
+            "previous": previous,
         }))
 
     async def play_message(self, event):
         message = event["message"]
-        board_id = event["board_id"]
-        row = event["row"]
-        col = event["col"]
+        button_id = event["button_id"]
         await self.send(text_data=json.dumps({
             "message": message,
-            "board_id": board_id,
-            "row": row,
-            "col": col
+            "buttonId": button_id
+        }))
+
+    async def save_message(self, event):
+        message = event["message"]
+        status = event["status"]
+        await self.send(text_data=json.dumps({
+            "message": message,
+            "status": status
         }))
     
     async def end_message(self, event):
         message = event["message"]
         board_id = event["board_id"]
-        row = event["last_row"]
-        col = event["last_col"]
         await self.send(text_data=json.dumps({
             "message": message,
-            "board_id": board_id,
-            "last_row": row,
-            "last_col": col
+            "board_id": board_id
         }))
-
+    
     @database_sync_to_async
-    def update_board(self, board_id, row, col):
-        row = int(row)
-        col = int(col)
-        board = Board.objects.get(pk=board_id)
-        size = board.size
-        previous = board.previous
-        details = np.array(board.details.split(',')).reshape(size, size)
-        if previous == "O":
-            details[row, col] = "X"
+    def save_game(self, next_move, details):
+        board = Board.objects.get(pk=self.board_id)
+        board.details = details
+        if next_move == "O":
             board.previous = "X"
         else:
-            details[row, col] = "O"
             board.previous = "O"
-        if checkEndGame(details, row, col):
-            board.details = ",".join([""]*(size**2))
-            board.previous = "O"
-            board.save()
-            return "end"
-        board.details = ",".join(details.flatten().tolist())
         board.save()
-        return "continue"
+
+    @database_sync_to_async
+    def get_board_info(self, board_id):
+        board = Board.objects.get(pk=board_id)
+        return {
+            "previous": board.previous,
+            "size": board.size
+        }

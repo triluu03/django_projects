@@ -1,5 +1,7 @@
 {% if played == "" %}
     <button type="button" onclick="updateBoard('{{ board_id }}', '{{ row }}', '{{ col }}')"></button>
-{% else %}
-    <button type="submit" disabled>{{ played }}</button>
+{% elif played == "X" %}
+    <button disabled style="background-color: #7FFFD4;">{{ played }}</button>
+{% elif played == "O" %}
+    <button disabled style="background-color: #FF7FAA;">{{ played }}</button>
 {% endif %}
