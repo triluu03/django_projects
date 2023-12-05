@@ -31,7 +31,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         message = data['message']
         
         if message == "join game":
-            board_info = await self.get_board_info(self.board_id)
+            board_info = await self.get_board_info()
             previous = board_info["previous"]
             self.size = board_info["size"]
             await self.channel_layer.group_send(
@@ -50,6 +50,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             details = np.array(data['details']).reshape(self.size, self.size)
             details[row, col] = next_move
             if checkEndGame(details, row, col):
+                await self.reset_board()
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
@@ -133,9 +134,17 @@ class GameConsumer(AsyncWebsocketConsumer):
         board.save()
 
     @database_sync_to_async
-    def get_board_info(self, board_id):
-        board = Board.objects.get(pk=board_id)
+    def get_board_info(self):
+        board = Board.objects.get(pk=self.board_id)
         return {
             "previous": board.previous,
             "size": board.size
         }
+    
+    @database_sync_to_async
+    def reset_board(self):
+        board = Board.objects.get(pk=self.board_id)
+        size = board.size
+        board.details = ",".join([""]*(size**2))
+        board.previous = "O"
+        board.save()
